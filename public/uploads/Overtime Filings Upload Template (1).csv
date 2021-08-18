@@ -1,0 +1,2 @@
+Employee ID,Employee Name,Approver Employee ID,Approver Name,Application Type,Start Date Time,End Date Time,Status,Reason
+<EMP-001>,<Sample Employee>,<APP-001>,<Sample Approver>,<Time-Off> or <Premium>,<07/01/2020 06:00 PM>,<07/01/2020 09:00 PM>,<Approved>,<From Upload>
