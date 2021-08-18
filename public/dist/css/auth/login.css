@@ -1,0 +1,15 @@
+.bg-blue{
+    background-color: #061f35;
+}
+.auth-box{
+    -webkit-box-shadow: 12px 16px 17px -6px rgba(0,0,0,0.51)!important;
+    -moz-box-shadow: 12px 16px 17px -6px rgba(0,0,0,0.51)!important;
+    box-shadow: 12px 16px 17px -6px rgba(0,0,0,0.51)!important;
+}
+.auth-wrapper .auth-box .modal-bg-img {
+    background-color: white;
+}
+.auth-wrapper{
+    min-height: 0px!important;
+    max-height: 100vh;
+}

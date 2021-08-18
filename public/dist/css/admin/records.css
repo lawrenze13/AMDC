@@ -1,0 +1,8 @@
+.image-gallery{
+    width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+#image-viewer{
+    z-index : 90!important;
+}
