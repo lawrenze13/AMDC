@@ -12,6 +12,6 @@ class PatientModel extends Model
     protected $useSoftDeletes = true;
     protected $table = 'patient_info';
     protected $primaryKey = 'patient_id';
-    protected $allowedFields = ['patient_id','first_name', 'middle_initial','last_name', 'birthdate', 'sex', 'email', 'contact', 'address', 'photo_url' ,'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields = ['patient_id','first_name', 'middle_initial','last_name', 'birthdate', 'sex', 'email', 'contact', 'address', 'patient_type','photo_url' ,'created_at', 'updated_at', 'deleted_at'];
     
 }
