@@ -65,34 +65,47 @@
                                         <div class="modal-content">
 
                                             <div class="modal-body">
-                                               
+                                               <h4 class="card-title">Add Transaction</h4>
 
                                                 <form class="pl-3 pr-3" action="#">
-
-                                                    <div class="form-group">
-                                                        <label for="username">Patient Name
+                                                    <div class="row p-2">
+                                                        <div class="col-6">
+                                                            <input id="patient_type" type="hidden" value="">
+                                                            <button type="button" id="btn-existing" class="btn waves-effect waves-light btn-block btn-success">Existing</button>
+                                                        </div>
+                                                        <div class="col-6">
+                                                        <button type="button" id="btn-new" class="btn waves-effect waves-light btn-block btn-primary">New Patient</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group existing d-none">
+                                                        <label class="" for="username ">Patient Name
                                                         <select style="width: 100%" class="form-control patient-name" id="patient_id">
                                                             <?php foreach($patientData as $patient): ?>
                                                             <option value="<?php echo $patient['patient_id'] ?>"><?php echo $patient['last_name']. ",  " . $patient['first_name'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>    
-
                                                         </label>                                                                                         
+                                                    </div>
+                                                    <div class="form-group new-patient d-none">
+                                                            <label for="first_name">First Name<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="first_name" name="first_name" >
+                                                            <label for="last_name">Last Name<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="last_name" name="last_name" >
                                                     </div>
                                                         <div class="form-group">
                                                             <label for="tooth_no">Tooth No.</label>
                                                             <input type="text" class="form-control" id="tooth_no" name="tooth_no" >
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="todescriptionoth_no">Description</label>
+                                                            <label for="todescriptionoth_no">Description<span class="text-danger">*</span></label>
                                                             <textarea class="form-control" rows="3"  id="description" name="description" ></textarea>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="amount">Amount</label>
+                                                            <label for="amount">Amount<span class="text-danger">*</span></label>
                                                             <input type="number" class="form-control" id="amount" name="amount" >
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="transaction_date">Date Transact</label>
+                                                            <label for="transaction_date">Date Transact<span class="text-danger">*</span></label>
                                                             <input type="date" class="form-control" id="transaction_date" name="transaction_date" >
                                                         </div>
                                                         <div class="col">

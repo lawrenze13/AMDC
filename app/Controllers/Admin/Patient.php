@@ -19,7 +19,7 @@ class Patient extends BaseController
 		$userData = session('loggedUser');
 		
 		$patientModel = new \App\Models\PatientModel();
-		$data['patientData'] = $patientModel->orderBy('first_name', 'desc')->findAll();
+		$data['patientData'] = $patientModel->orderBy('last_name', 'desc')->findAll();
 		$data['userData'] = $userData;
         $data['selected'] = 'patient';
 		return view('admin/patient', $data);
@@ -46,6 +46,7 @@ class Patient extends BaseController
 			'email'=> $this->request->getPost('email'),
 			'contact'=> $this->request->getPost('contact'),
 			'address'=> $this->request->getPost('address'),
+			'patient_type' => '1',
 			'created_at' => date("Y-m-d")
 		];
 		$patientModel->save($patient);
@@ -53,6 +54,9 @@ class Patient extends BaseController
 			'status' => 'Patient saved successfully'
 		];
 		return $this->response->setJSON($data);
+	}
+	public function save_external(){
+	
 	}
 	public function update(){
 		$patientModel = new \App\Models\PatientModel();

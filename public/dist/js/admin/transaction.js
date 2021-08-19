@@ -2,6 +2,26 @@ var base_url = $('#baseUrl').val();
 var table;
 function validateForm(){
     var errorCount = 0;
+    if($("#patient_type").val() == 2){
+        if($("#first_name").val().trim().length == 0){
+            errorCount++;
+            $('#invalidfirst_name').remove();
+            $("#first_name").addClass('is-invalid');
+            $("#first_name").after("<div id='invalidfirst_name' class='invalid-feedback'> First Name is required.</div>");
+        }else{
+            $('#invalidfirst_name').remove();
+            $('#first_name').removeClass('is-invalid');
+        }
+        if($("#last_name").val().trim().length == 0){
+            errorCount++;
+            $('#invalidlast_name').remove();
+            $("#last_name").addClass('is-invalid');
+            $("#last_name").after("<div id='invalidlast_name' class='invalid-feedback'> Last Name is required.</div>");
+        }else{
+            $('#invalidlast_name').remove();
+            $('#last_name').removeClass('is-invalid');
+        }
+    }
     if($("#tooth_no").val().trim().length == 0){
         errorCount++;
         $('#invalidToothNo').remove();
@@ -202,7 +222,45 @@ function initialiseTable(){
    
     }
 }
+function save_external(patient_id){
+    var data = {
+        'patient_id' : patient_id,
+        'tooth_no' : $('#tooth_no').val(),
+        'description' : $('#description').val(),
+        'amount' : $('#amount').val(),
+        'transaction_date' : $('#transaction_date').val(),
+    }
+    $.ajax({
+        method  : 'POST',
+        url : base_url + '/public/Admin/transaction/save',
+        data    : data,
+        success : function(response){
+            console.log("success");
+                Swal.fire({
+                    title: 'Success!',
+                    text: response['status'],
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                }).then( function() {
+                    table.destroy();
+                    initialiseTable();
+                });
+      
+            
+        }              
+  });   
+}
 $(function () {
+    $('#btn-existing').click(function (e) { 
+        $("#patient_type").val('1');
+        $('.existing').removeClass('d-none');
+        $('.new-patient').addClass('d-none');
+    });
+    $('#btn-new').click(function (e) { 
+        $("#patient_type").val('2');
+        $('.existing').addClass('d-none');
+        $('.new-patient').removeClass('d-none');
+    });
     initialiseTable();
     $('#generate-report').click(function(){
         data = {
@@ -234,22 +292,56 @@ $(function () {
     });
 
     $("#save-transaction").click(function () { 
-
+           
         isValidate = validateForm();
         if(isValidate){
-            var data = {
-                'patient_id' : $('#patient_id').val(),
-                'tooth_no' : $('#tooth_no').val(),
-                'description' : $('#description').val(),
-                'amount' : $('#amount').val(),
-                'transaction_date' : $('#transaction_date').val(),
-            }
-            $.ajax({
-                method  : 'POST',
-                url : base_url + '/public/Admin/transaction/save',
-                data    : data,
-                success : function(response){
-                    console.log("success");
+            var type = $("#patient_type").val();
+            console.log(type);
+            if(type == 1){
+                console.log('Internal');
+                var data = {
+                    'patient_id' : $('#patient_id').val(),
+                    'tooth_no' : $('#tooth_no').val(),
+                    'description' : $('#description').val(),
+                    'amount' : $('#amount').val(),
+                    'transaction_date' : $('#transaction_date').val()
+                }
+                $.ajax({
+                    method  : 'POST',
+                    url : base_url + '/public/Admin/transaction/save',
+                    data    : data,
+                    success : function(response){
+                        console.log("success");
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response['status'],
+                                icon: 'success',
+                                confirmButtonText: 'Cool'
+                            }).then( function() {
+                                table.destroy();
+                                initialiseTable();
+                            });
+                  
+                        
+                    }              
+              });   
+            }else{
+
+                console.log('External');
+                var data = {
+                    'first_name' : $('#first_name').val(),
+                    'last_name' : $('#last_name').val(),
+                    'tooth_no' : $('#tooth_no').val(),
+                    'description' : $('#description').val(),
+                    'amount' : $('#amount').val(),
+                    'transaction_date' : $('#transaction_date').val()
+                }
+                $.ajax({
+                    method  : 'POST',
+                    url : base_url + '/public/Admin/transaction/save_external_transaction',
+                    data    : data,
+                    success : function(response){
+                        console.log("success");
                         Swal.fire({
                             title: 'Success!',
                             text: response['status'],
@@ -258,11 +350,13 @@ $(function () {
                         }).then( function() {
                             table.destroy();
                             initialiseTable();
+                            $('#signup-modal').modal('hide');
                         });
-              
-                    
-                }              
-          });
+                    }
+              });
+            }
+            
+           
         }
     }); 
    

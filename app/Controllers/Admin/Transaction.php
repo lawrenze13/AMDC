@@ -19,7 +19,7 @@ class Transaction extends BaseController
         $transactionModel = new \App\Models\TransactionModel();
         $data['transactionData'] = $transactionModel->orderBy('transaction_date', 'desc')->findAll();
         $patientModel = new \App\Models\PatientModel();
-        $data['patientData'] = $patientModel->select(['patient_id', 'first_name', 'last_name'])->findAll();
+        $data['patientData'] = $patientModel->select(['patient_id', 'first_name', 'last_name'])->orderBy('last_name', 'asc')->findAll();
         $i = 0;
         foreach($data['transactionData'] as $transaction){
             
@@ -37,7 +37,7 @@ class Transaction extends BaseController
 		$uuid4 = $uuid->uuid4();
 		$struuid = $uuid4->toString();
 		$transactionModel = new \App\Models\TransactionModel();
-		$patient = [
+		$trans = [
 			'trans_id'=> $struuid,
 			'patient_id'=> $this->request->getPost('patient_id'),
 			'tooth_no'=> $this->request->getPost('tooth_no'),
@@ -46,7 +46,7 @@ class Transaction extends BaseController
 			'transaction_date'=> $this->request->getPost('transaction_date'),
 			'created_at' => date("Y-m-d h:i:s")
 		];
-		$transactionModel->save($patient);
+		$transactionModel->save($trans);
 		$data = [
 			'status' => 'Transaction saved successfully'
 		];
@@ -96,5 +96,38 @@ class Transaction extends BaseController
         $transData['from_date'] = $from_date;
         $transData['to_date'] = $to_date;
         return $this->response->setJSON($transData);
+    }
+    public function save_external_transaction(){
+        $uuid = service('uuid');
+		$uuid4 = $uuid->uuid4();
+		$struuid = $uuid4->toString();
+		$patientModel = new \App\Models\PatientModel();
+		$patient = [
+			'patient_id'=> $struuid,
+			'first_name'=> $this->request->getPost('first_name'),
+			'last_name'=> $this->request->getPost('last_name'),
+			'patient_type' => '2',
+			'created_at' => date("Y-m-d h:i:s")
+		];
+		$query = $patientModel->save($patient);
+        if($query){
+            $transactionModel = new \App\Models\TransactionModel();
+            $uuid_trans = $uuid->uuid4();
+		    $str_uuid_trans = $uuid4->toString();
+            $trans = [
+                'trans_id'=> $str_uuid_trans,
+                'patient_id'=> $struuid,
+                'tooth_no'=> $this->request->getPost('tooth_no'),
+                'description'=> $this->request->getPost('description'),
+                'amount'=> $this->request->getPost('amount'),
+                'transaction_date'=> $this->request->getPost('transaction_date'),
+                'created_at' => date("Y-m-d h:i:s")
+            ];
+            $transactionModel->save($trans);
+        }
+		$data = [
+			'status' => 'Transaction saved successfully'
+		];
+		return $this->response->setJSON($data);
     }
 }
